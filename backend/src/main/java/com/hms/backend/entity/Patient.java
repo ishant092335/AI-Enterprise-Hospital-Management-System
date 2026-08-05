@@ -49,4 +49,8 @@ public class Patient extends BaseEntity {
     private String bloodGroup;
 
     private String address;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private String status = "ACTIVE";
 }

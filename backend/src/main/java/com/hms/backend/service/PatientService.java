@@ -23,10 +23,10 @@ public class PatientService {
     }
 
     // =========================
-    // GET ALL PATIENTS
+    // GET ALL ACTIVE PATIENTS
     // =========================
     public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+        return patientRepository.findByStatus("ACTIVE");
     }
 
     // =========================
@@ -34,9 +34,15 @@ public class PatientService {
     // =========================
     public Patient getPatientById(Long id) {
 
-        return patientRepository.findById(id)
+        Patient patient = patientRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Patient not found with id: " + id));
+
+        if ("DELETED".equals(patient.getStatus())) {
+            throw new ResourceNotFoundException("Patient not found with id: " + id);
+        }
+
+        return patient;
     }
 
     // =========================
@@ -44,9 +50,7 @@ public class PatientService {
     // =========================
     public Patient updatePatient(Long id, Patient updatedPatient) {
 
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Patient not found with id: " + id));
+        Patient patient = getPatientById(id);
 
         patient.setFirstName(updatedPatient.getFirstName());
         patient.setLastName(updatedPatient.getLastName());
@@ -61,15 +65,15 @@ public class PatientService {
     }
 
     // =========================
-    // DELETE PATIENT
+    // SOFT DELETE
     // =========================
     public void deletePatient(Long id) {
 
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Patient not found with id: " + id));
+        Patient patient = getPatientById(id);
 
-        patientRepository.delete(patient);
+        patient.setStatus("DELETED");
+
+        patientRepository.save(patient);
     }
 
     // =========================
@@ -87,7 +91,7 @@ public class PatientService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return patientRepository.findAll(pageable);
+        return patientRepository.findByStatus("ACTIVE", pageable);
     }
 
     // =========================
@@ -96,22 +100,26 @@ public class PatientService {
     public List<Patient> searchPatients(String keyword) {
 
         return patientRepository
-                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneContainingIgnoreCase(
+                .findByStatusAndFirstNameContainingIgnoreCaseOrStatusAndLastNameContainingIgnoreCaseOrStatusAndEmailContainingIgnoreCaseOrStatusAndPhoneContainingIgnoreCase(
+                        "ACTIVE",
                         keyword,
+                        "ACTIVE",
                         keyword,
+                        "ACTIVE",
                         keyword,
+                        "ACTIVE",
                         keyword
                 );
     }
 
     // =========================
-    // SORT BY FIRST NAME
+    // SORT ACTIVE PATIENTS
     // =========================
     public List<Patient> getPatientsSortedByFirstName() {
 
-        return patientRepository.findAll(
-                Sort.by(Sort.Direction.ASC, "firstName")
-        );
+        return patientRepository.findByStatus("ACTIVE")
+                .stream()
+                .sorted((p1, p2) -> p1.getFirstName().compareToIgnoreCase(p2.getFirstName()))
+                .toList();
     }
-
 }
