@@ -1,7 +1,9 @@
 package com.hms.backend.controller;
 
 import com.hms.backend.entity.Patient;
+import com.hms.backend.payload.ApiResponse;
 import com.hms.backend.service.PatientService;
+import com.hms.backend.util.ApiResponseUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,8 +25,14 @@ public class PatientController {
     // =========================
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Patient addPatient(@Valid @RequestBody Patient patient) {
-        return patientService.savePatient(patient);
+    public ApiResponse<Patient> addPatient(@Valid @RequestBody Patient patient) {
+
+        Patient savedPatient = patientService.savePatient(patient);
+
+        return ApiResponseUtil.success(
+                "Patient created successfully",
+                savedPatient
+        );
     }
 
     // =========================
@@ -32,8 +40,12 @@ public class PatientController {
     // =========================
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR','PATIENT')")
-    public List<Patient> getAllPatients() {
-        return patientService.getAllPatients();
+    public ApiResponse<List<Patient>> getAllPatients() {
+
+        return ApiResponseUtil.success(
+                "Patients fetched successfully",
+                patientService.getAllPatients()
+        );
     }
 
     // =========================
@@ -41,8 +53,12 @@ public class PatientController {
     // =========================
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR','PATIENT')")
-    public Patient getPatientById(@PathVariable Long id) {
-        return patientService.getPatientById(id);
+    public ApiResponse<Patient> getPatientById(@PathVariable Long id) {
+
+        return ApiResponseUtil.success(
+                "Patient fetched successfully",
+                patientService.getPatientById(id)
+        );
     }
 
     // =========================
@@ -50,18 +66,21 @@ public class PatientController {
     // =========================
     @GetMapping("/pagination")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
-    public Page<Patient> getPatientsWithPagination(
+    public ApiResponse<Page<Patient>> getPatientsWithPagination(
 
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDir) {
 
-        return patientService.getPatientsWithPagination(
-                page,
-                size,
-                sortBy,
-                sortDir
+        return ApiResponseUtil.success(
+                "Patients fetched successfully",
+                patientService.getPatientsWithPagination(
+                        page,
+                        size,
+                        sortBy,
+                        sortDir
+                )
         );
     }
 
@@ -70,10 +89,13 @@ public class PatientController {
     // =========================
     @GetMapping("/search")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
-    public List<Patient> searchPatients(
+    public ApiResponse<List<Patient>> searchPatients(
             @RequestParam("keyword") String keyword) {
 
-        return patientService.searchPatients(keyword);
+        return ApiResponseUtil.success(
+                "Search completed successfully",
+                patientService.searchPatients(keyword)
+        );
     }
 
     // =========================
@@ -81,8 +103,12 @@ public class PatientController {
     // =========================
     @GetMapping("/sort")
     @PreAuthorize("hasAnyRole('ADMIN','DOCTOR')")
-    public List<Patient> getPatientsSortedByFirstName() {
-        return patientService.getPatientsSortedByFirstName();
+    public ApiResponse<List<Patient>> getPatientsSortedByFirstName() {
+
+        return ApiResponseUtil.success(
+                "Patients sorted successfully",
+                patientService.getPatientsSortedByFirstName()
+        );
     }
 
     // =========================
@@ -90,11 +116,14 @@ public class PatientController {
     // =========================
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Patient updatePatient(
+    public ApiResponse<Patient> updatePatient(
             @PathVariable Long id,
             @Valid @RequestBody Patient patient) {
 
-        return patientService.updatePatient(id, patient);
+        return ApiResponseUtil.success(
+                "Patient updated successfully",
+                patientService.updatePatient(id, patient)
+        );
     }
 
     // =========================
@@ -102,10 +131,12 @@ public class PatientController {
     // =========================
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public String deletePatient(@PathVariable Long id) {
+    public ApiResponse<Void> deletePatient(@PathVariable Long id) {
 
         patientService.deletePatient(id);
 
-        return "Patient Deleted Successfully";
+        return ApiResponseUtil.success(
+                "Patient deleted successfully"
+        );
     }
 }

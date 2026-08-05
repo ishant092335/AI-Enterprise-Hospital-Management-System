@@ -6,6 +6,8 @@ import com.hms.backend.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 
@@ -18,10 +20,11 @@ public class PatientService {
     // =========================
     // CREATE PATIENT
     // =========================
+    @CacheEvict(value = {"patients"}, allEntries = true)
     public Patient savePatient(Patient patient) {
         return patientRepository.save(patient);
     }
-
+    @Cacheable(value = "patients")
     // =========================
     // GET ALL ACTIVE PATIENTS
     // =========================
@@ -32,6 +35,7 @@ public class PatientService {
     // =========================
     // GET PATIENT BY ID
     // =========================
+    @Cacheable(value = "patient", key = "#id")
     public Patient getPatientById(Long id) {
 
         Patient patient = patientRepository.findById(id)
