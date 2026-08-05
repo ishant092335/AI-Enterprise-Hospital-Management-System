@@ -1,0 +1,24 @@
+package com.hms.backend.dto;
+
+import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AppointmentDTO {
+
+    private Long patientId;
+
+    private Long doctorId;
+
+    private LocalDate appointmentDate;
+
+    private LocalTime appointmentTime;
+
+    private String status;
+}
