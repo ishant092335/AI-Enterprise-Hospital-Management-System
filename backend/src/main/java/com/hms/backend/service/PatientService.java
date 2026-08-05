@@ -4,11 +4,8 @@ import com.hms.backend.entity.Patient;
 import com.hms.backend.exception.ResourceNotFoundException;
 import com.hms.backend.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-
 
 import java.util.List;
 
@@ -18,11 +15,23 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
+    // =========================
+    // CREATE PATIENT
+    // =========================
     public Patient savePatient(Patient patient) {
         return patientRepository.save(patient);
     }
 
+    // =========================
+    // GET ALL PATIENTS
+    // =========================
+    public List<Patient> getAllPatients() {
+        return patientRepository.findAll();
+    }
 
+    // =========================
+    // GET PATIENT BY ID
+    // =========================
     public Patient getPatientById(Long id) {
 
         return patientRepository.findById(id)
@@ -30,25 +39,9 @@ public class PatientService {
                         new ResourceNotFoundException("Patient not found with id: " + id));
     }
 
-    public void deletePatient(Long id) {
-        patientRepository.deleteById(id);
-    }
-
-    public Page<Patient> getPatientsWithPagination(int page, int size) {
-
-        PageRequest pageRequest = PageRequest.of(page, size);
-
-        return patientRepository.findAll(pageRequest);
-    }
-
-    public List<Patient> searchPatients(String firstName) {
-        return patientRepository.findByFirstNameContainingIgnoreCase(firstName);
-    }
-    public List<Patient> getPatientsSortedByFirstName() {
-
-        return patientRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName"));
-    }
-
+    // =========================
+    // UPDATE PATIENT
+    // =========================
     public Patient updatePatient(Long id, Patient updatedPatient) {
 
         Patient patient = patientRepository.findById(id)
@@ -67,7 +60,58 @@ public class PatientService {
         return patientRepository.save(patient);
     }
 
-    public List<Patient> getAllPatients() {
-        return patientRepository.findAll();
+    // =========================
+    // DELETE PATIENT
+    // =========================
+    public void deletePatient(Long id) {
+
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Patient not found with id: " + id));
+
+        patientRepository.delete(patient);
     }
+
+    // =========================
+    // PAGINATION + SORTING
+    // =========================
+    public Page<Patient> getPatientsWithPagination(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir) {
+
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return patientRepository.findAll(pageable);
+    }
+
+    // =========================
+    // ENTERPRISE SEARCH
+    // =========================
+    public List<Patient> searchPatients(String keyword) {
+
+        return patientRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneContainingIgnoreCase(
+                        keyword,
+                        keyword,
+                        keyword,
+                        keyword
+                );
+    }
+
+    // =========================
+    // SORT BY FIRST NAME
+    // =========================
+    public List<Patient> getPatientsSortedByFirstName() {
+
+        return patientRepository.findAll(
+                Sort.by(Sort.Direction.ASC, "firstName")
+        );
+    }
+
 }
