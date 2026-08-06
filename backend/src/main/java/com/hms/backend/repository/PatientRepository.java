@@ -42,4 +42,9 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             String status4,
             String phone
     );
+
+    // =========================
+    // DASHBOARD
+    // =========================
+    long countByStatus(String status);
 }

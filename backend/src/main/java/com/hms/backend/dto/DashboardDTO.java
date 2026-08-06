@@ -6,20 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class DashboardDTO {
 
     private long totalPatients;
+
+    private long activePatients;
 
     private long totalDoctors;
 
     private long totalAppointments;
 
-    private long totalBills;
-
-    private double totalRevenue;
-
     private long todayAppointments;
+
 }
