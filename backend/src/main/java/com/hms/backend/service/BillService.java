@@ -34,18 +34,35 @@ public class BillService {
                     "Bill already exists for this appointment.");
         }
 
+        // =========================
+        // AUTO TOTAL CALCULATION
+        // =========================
         double total = dto.getConsultationFee()
                 + dto.getMedicineFee()
-                + dto.getOtherCharges();
+                + dto.getLabFee()
+                + dto.getOtherCharges()
+                + dto.getTax()
+                - dto.getDiscount();
+
+        // =========================
+        // AUTO INVOICE NUMBER
+        // =========================
+        String invoiceNumber =
+                "INV-" + System.currentTimeMillis();
 
         Bill bill = Bill.builder()
                 .appointment(appointment)
+                .invoiceNumber(invoiceNumber)
                 .consultationFee(dto.getConsultationFee())
                 .medicineFee(dto.getMedicineFee())
+                .labFee(dto.getLabFee())
                 .otherCharges(dto.getOtherCharges())
+                .discount(dto.getDiscount())
+                .tax(dto.getTax())
                 .totalAmount(total)
-                .billDate(LocalDate.now())
+                .paymentMethod(dto.getPaymentMethod())
                 .paymentStatus(dto.getPaymentStatus())
+                .billDate(LocalDate.now())
                 .build();
 
         return billRepository.save(bill);
@@ -56,6 +73,7 @@ public class BillService {
     }
 
     public Bill getBillById(Long id) {
+
         return billRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException(
