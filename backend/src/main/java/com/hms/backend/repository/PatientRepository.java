@@ -12,17 +12,25 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     // =========================
-    // GET ALL ACTIVE PATIENTS
+    // ACTIVE PATIENTS
     // =========================
     List<Patient> findByStatus(String status);
 
     // =========================
-    // PAGINATION FOR ACTIVE PATIENTS
+    // PAGINATION
     // =========================
     Page<Patient> findByStatus(String status, Pageable pageable);
 
     // =========================
-    // ENTERPRISE SEARCH (ACTIVE ONLY)
+    // SEARCH BY FIRST NAME
+    // =========================
+    List<Patient> findByStatusAndFirstNameContainingIgnoreCase(
+            String status,
+            String firstName
+    );
+
+    // =========================
+    // ENTERPRISE SEARCH
     // =========================
     List<Patient> findByStatusAndFirstNameContainingIgnoreCaseOrStatusAndLastNameContainingIgnoreCaseOrStatusAndEmailContainingIgnoreCaseOrStatusAndPhoneContainingIgnoreCase(
             String status1,
@@ -34,5 +42,4 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
             String status4,
             String phone
     );
-
 }

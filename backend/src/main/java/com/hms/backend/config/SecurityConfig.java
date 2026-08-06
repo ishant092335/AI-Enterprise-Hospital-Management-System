@@ -49,7 +49,7 @@ public class SecurityConfig {
                         ).permitAll()
 
                         .requestMatchers("/api/doctors/**")
-                        .hasAnyRole("ADMIN", "DOCTOR")
+                        .hasAnyRole("ADMIN", "DOCTOR", "PATIENT")
 
                         .requestMatchers("/api/patients/**")
                         .hasAnyRole("ADMIN", "PATIENT")

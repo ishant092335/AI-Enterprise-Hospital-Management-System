@@ -38,15 +38,21 @@ public class UserService {
                 .orElse(null);
 
         if (user == null) {
+            System.out.println("User not found");
             return null;
         }
 
-        // Plain password ki jagah BCrypt compare
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            System.out.println("Password does not match");
             return null;
         }
 
         String token = jwtService.generateToken(user.getUsername());
+
+        // DEBUG
+        System.out.println("======================================");
+        System.out.println("Generated Token : " + token);
+        System.out.println("======================================");
 
         return new LoginResponse(token);
     }
