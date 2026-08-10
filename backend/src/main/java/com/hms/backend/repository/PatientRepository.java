@@ -11,40 +11,48 @@ import java.util.List;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    // =========================
-    // ACTIVE PATIENTS
-    // =========================
+    // Active patients
     List<Patient> findByStatus(String status);
 
-    // =========================
-    // PAGINATION
-    // =========================
+    // Pagination + Sorting
     Page<Patient> findByStatus(String status, Pageable pageable);
 
-    // =========================
-    // SEARCH BY FIRST NAME
-    // =========================
+    // Search by First Name
     List<Patient> findByStatusAndFirstNameContainingIgnoreCase(
             String status,
             String firstName
     );
 
-    // =========================
-    // ENTERPRISE SEARCH
-    // =========================
-    List<Patient> findByStatusAndFirstNameContainingIgnoreCaseOrStatusAndLastNameContainingIgnoreCaseOrStatusAndEmailContainingIgnoreCaseOrStatusAndPhoneContainingIgnoreCase(
-            String status1,
-            String firstName,
-            String status2,
-            String lastName,
-            String status3,
-            String email,
-            String status4,
+    // Search by Last Name
+    List<Patient> findByStatusAndLastNameContainingIgnoreCase(
+            String status,
+            String lastName
+    );
+
+    // Search by Email
+    List<Patient> findByStatusAndEmailContainingIgnoreCase(
+            String status,
+            String email
+    );
+
+    // Search by Phone
+    List<Patient> findByStatusAndPhoneContaining(
+            String status,
             String phone
     );
 
-    // =========================
-    // DASHBOARD
-    // =========================
+    // Search by Patient ID
+    List<Patient> findByStatusAndId(
+            String status,
+            Long id
+    );
+
+    // Search by Age
+    List<Patient> findByStatusAndAge(
+            String status,
+            Integer age
+    );
+
+    // Dashboard count
     long countByStatus(String status);
 }

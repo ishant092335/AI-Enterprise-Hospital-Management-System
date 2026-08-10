@@ -24,7 +24,7 @@ public class DashboardService {
     public DashboardDTO getDashboardData() {
 
         return DashboardDTO.builder()
-                .totalPatients(patientRepository.count())
+                .totalPatients(patientRepository.countByStatus("ACTIVE"))
                 .activePatients(patientRepository.countByStatus("ACTIVE"))
                 .totalDoctors(doctorRepository.count())
                 .totalAppointments(appointmentRepository.count())
