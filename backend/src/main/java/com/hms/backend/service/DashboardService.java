@@ -26,10 +26,12 @@ public class DashboardService {
         return DashboardDTO.builder()
                 .totalPatients(patientRepository.countByStatus("ACTIVE"))
                 .activePatients(patientRepository.countByStatus("ACTIVE"))
-                .totalDoctors(doctorRepository.countByStatus("ACTIVE")) 
-                .totalAppointments(appointmentRepository.count())
+                .totalDoctors(doctorRepository.countByStatus("ACTIVE"))
+                .totalAppointments(appointmentRepository.countByStatus("BOOKED"))
                 .todayAppointments(
-                        appointmentRepository.countTodayAppointments(LocalDate.now())
+                        appointmentRepository.countTodayAppointments(
+                                LocalDate.now()
+                        )
                 )
                 .build();
     }

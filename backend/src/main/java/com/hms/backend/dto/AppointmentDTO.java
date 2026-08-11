@@ -1,6 +1,11 @@
 package com.hms.backend.dto;
 
-import lombok.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,12 +17,16 @@ import java.time.LocalTime;
 @Builder
 public class AppointmentDTO {
 
+    @NotNull(message = "Patient ID is required")
     private Long patientId;
 
+    @NotNull(message = "Doctor ID is required")
     private Long doctorId;
 
+    @NotNull(message = "Appointment date is required")
     private LocalDate appointmentDate;
 
+    @NotNull(message = "Appointment time is required")
     private LocalTime appointmentTime;
 
     private String status;
