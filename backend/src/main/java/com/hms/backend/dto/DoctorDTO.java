@@ -1,39 +1,30 @@
-package com.hms.backend.entity;
+package com.hms.backend.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Entity
-@Table(name = "doctors")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Doctor extends BaseEntity {
+public class DoctorDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "Doctor Name is required")
-    @Column(nullable = false)
     private String name;
 
     @NotBlank(message = "Specialization is required")
-    @Column(nullable = false)
     private String specialization;
 
     @Email(message = "Invalid Email")
     @NotBlank(message = "Email is required")
-    @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank(message = "Phone Number is required")
-    @Column(nullable = false)
     private String phone;
 
     @Min(value = 0, message = "Experience cannot be negative")
@@ -41,8 +32,4 @@ public class Doctor extends BaseEntity {
 
     @NotBlank(message = "Qualification is required")
     private String qualification;
-
-    @Column(nullable = false)
-    @Builder.Default
-    private String status = "ACTIVE";
 }

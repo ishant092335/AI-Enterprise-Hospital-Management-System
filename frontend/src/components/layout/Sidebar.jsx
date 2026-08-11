@@ -63,7 +63,9 @@ function Sidebar() {
         },
       }}
     >
-      <Toolbar>
+      <Toolbar />
+
+      <Box sx={{ px: 2, py: 2 }}>
         <Typography
           variant="h6"
           sx={{
@@ -73,7 +75,7 @@ function Sidebar() {
         >
           HMS
         </Typography>
-      </Toolbar>
+      </Box>
 
       <Box sx={{ overflow: "auto" }}>
         <List>
