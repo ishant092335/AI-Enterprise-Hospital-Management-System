@@ -4,7 +4,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../pages/auth/Login";
 import Patients from "../pages/patients/Patients";
 import Doctors from "../pages/doctors/Doctors";
-import Appointments from "../pages/appointments/Appointments";
+import Billing from "../pages/billing/Billing";
 
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../context/AuthContext";
@@ -15,13 +15,18 @@ function AppRouter() {
     return (
         <BrowserRouter>
             <Routes>
+
                 {/* =========================
             LOGIN
         ========================= */}
                 <Route
                     path="/login"
                     element={
-                        isAuthenticated ? <Navigate to="/" replace /> : <Login />
+                        isAuthenticated ? (
+                            <Navigate to="/" replace />
+                        ) : (
+                            <Login />
+                        )
                     }
                 />
 
@@ -62,13 +67,13 @@ function AppRouter() {
                 />
 
                 {/* =========================
-            APPOINTMENTS
+            BILLING
         ========================= */}
                 <Route
-                    path="/appointments"
+                    path="/billing"
                     element={
                         <ProtectedRoute>
-                            <Appointments />
+                            <Billing />
                         </ProtectedRoute>
                     }
                 />
@@ -85,6 +90,7 @@ function AppRouter() {
                         />
                     }
                 />
+
             </Routes>
         </BrowserRouter>
     );

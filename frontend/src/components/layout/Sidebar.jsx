@@ -45,54 +45,54 @@ function Sidebar() {
       icon: <EventNoteIcon />,
     },
     {
-      label: "Bills",
-      path: "/bills",
+      label: "Billing",
+      path: "/billing",
       icon: <ReceiptLongIcon />,
     },
   ];
 
   return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box",
-        },
-      }}
-    >
-      <Toolbar />
-
-      <Box sx={{ px: 2, py: 2 }}>
-        <Typography
-          variant="h6"
+      <Drawer
+          variant="permanent"
           sx={{
-            fontWeight: "bold",
-            color: "#1976d2",
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           }}
-        >
-          HMS
-        </Typography>
-      </Box>
+      >
+        <Toolbar />
 
-      <Box sx={{ overflow: "auto" }}>
-        <List>
-          {menuItems.map((item) => (
-            <ListItemButton
-              key={item.path}
-              selected={location.pathname === item.path}
-              onClick={() => navigate(item.path)}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
+        <Box sx={{ px: 2, py: 2 }}>
+          <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                color: "#1976d2",
+              }}
+          >
+            HMS
+          </Typography>
+        </Box>
 
-              <ListItemText primary={item.label} />
-            </ListItemButton>
-          ))}
-        </List>
-      </Box>
-    </Drawer>
+        <Box sx={{ overflow: "auto" }}>
+          <List>
+            {menuItems.map((item) => (
+                <ListItemButton
+                    key={item.path}
+                    selected={location.pathname === item.path}
+                    onClick={() => navigate(item.path)}
+                >
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
   );
 }
 
