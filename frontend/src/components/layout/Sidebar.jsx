@@ -16,6 +16,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 
 const drawerWidth = 240;
 
@@ -48,6 +49,11 @@ function Sidebar() {
       label: "Billing",
       path: "/billing",
       icon: <ReceiptLongIcon />,
+    },
+    {
+      label: "Medical Records",
+      path: "/medical-records",
+      icon: <MedicalInformationIcon />,
     },
   ];
 

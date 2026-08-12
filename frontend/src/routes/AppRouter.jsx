@@ -5,6 +5,7 @@ import Login from "../pages/auth/Login";
 import Patients from "../pages/patients/Patients";
 import Doctors from "../pages/doctors/Doctors";
 import Billing from "../pages/billing/Billing";
+import MedicalRecords from "../pages/medical-records/MedicalRecords";
 
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "../context/AuthContext";
@@ -74,6 +75,18 @@ function AppRouter() {
                     element={
                         <ProtectedRoute>
                             <Billing />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* =========================
+            MEDICAL RECORDS
+        ========================= */}
+                <Route
+                    path="/medical-records"
+                    element={
+                        <ProtectedRoute>
+                            <MedicalRecords />
                         </ProtectedRoute>
                     }
                 />
