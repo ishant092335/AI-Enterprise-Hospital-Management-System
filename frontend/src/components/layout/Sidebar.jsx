@@ -17,6 +17,8 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import MedicationIcon from "@mui/icons-material/Medication";
 
 const drawerWidth = 240;
 
@@ -55,6 +57,16 @@ function Sidebar() {
       path: "/medical-records",
       icon: <MedicalInformationIcon />,
     },
+    {
+      label: "Doctor Availability",
+      path: "/doctor-availability",
+      icon: <AccessTimeIcon />,
+    },
+    {
+      label: "Prescriptions",
+      path: "/prescriptions",
+      icon: <MedicationIcon />,
+    },
   ];
 
   return (
@@ -88,7 +100,11 @@ function Sidebar() {
             {menuItems.map((item) => (
                 <ListItemButton
                     key={item.path}
-                    selected={location.pathname === item.path}
+                    selected={
+                      item.path === "/"
+                          ? location.pathname === "/"
+                          : location.pathname.startsWith(item.path)
+                    }
                     onClick={() => navigate(item.path)}
                 >
                   <ListItemIcon>{item.icon}</ListItemIcon>
